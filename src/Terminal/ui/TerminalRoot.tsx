@@ -33,6 +33,8 @@ const useStyles = makeStyles()((theme: Theme) => ({
     [theme.breakpoints.down("sm")]: {
       flex: "1 1 auto",
       minHeight: 0,
+      fontSize: "0.82rem",
+      lineHeight: 1.35,
     },
   },
   preformatted: {
