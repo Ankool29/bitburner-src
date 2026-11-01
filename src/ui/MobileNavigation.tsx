@@ -52,9 +52,6 @@ export function MobileNavigation({ page }: IProps): React.ReactElement {
   ];
   const selected = items.findIndex((item) => item.page === page);
 
-  const canOpenFactions = Player.factionInvitations.length > 0 || Player.factions.length > 0 ||
-    Player.factionRumors.size > 0 || Player.augmentations.length > 0 ||
-    Player.queuedAugmentations.length > 0;
   const canOpenAugmentations = Player.augmentations.length > 0 ||
     Player.queuedAugmentations.length > 0 || Player.exploits.length > 0;
   const entries: { title: string; pages: MenuEntry[] }[] = [
@@ -68,7 +65,7 @@ export function MobileNavigation({ page }: IProps): React.ReactElement {
     ]},
     { title: "PERSONNAGE", pages: [
       { label: "Statistiques", page: Page.Stats, icon: <EqualizerIcon /> },
-      ...(canOpenFactions ? [{ label: "Factions", page: Page.Factions, icon: <ContactsIcon /> }] : []),
+      { label: "Factions", page: Page.Factions, icon: <ContactsIcon /> },
       ...(canOpenAugmentations ? [{ label: "Augmentations", page: Page.Augmentations, icon: <DoubleArrowIcon /> }] : []),
       { label: "Hacknet", page: Page.Hacknet, icon: <AccountTreeIcon /> },
       ...(Player.sleeves.length > 0 ? [{ label: "Sleeves", page: Page.Sleeves, icon: <PeopleAltIcon /> }] : []),
