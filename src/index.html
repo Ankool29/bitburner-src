@@ -37,6 +37,61 @@
       *::-webkit-scrollbar {
         display: none; /* for Chrome, Safari, and Opera */
       }
+
+      /* Keep the game inside the phone viewport and avoid page-level sideways scrolling. */
+      @media (max-width: 600px) {
+        html {
+          font-size: 15px;
+          overflow-x: hidden;
+        }
+        body {
+          max-width: 100%;
+          overflow-x: hidden;
+          font-size: 13px;
+        }
+        #root {
+          width: 100%;
+          max-width: 100%;
+          min-width: 0;
+          overflow-x: hidden;
+        }
+        #root * {
+          min-width: 0;
+        }
+        .MuiTypography-root {
+          line-height: 1.35;
+          overflow-wrap: anywhere;
+        }
+        .MuiButton-root {
+          min-width: 0;
+          min-height: 36px;
+          padding: 4px 7px;
+          font-size: 0.78rem;
+        }
+        .MuiTableContainer-root {
+          max-width: 100%;
+          overflow-x: auto;
+        }
+        .MuiTableCell-root {
+          padding: 6px 8px;
+          font-size: 0.8rem;
+        }
+        .MuiTabs-root {
+          max-width: 100%;
+        }
+        .MuiTab-root {
+          min-width: 0;
+          padding: 6px 8px;
+          font-size: 0.75rem;
+        }
+        .MuiFormControl-root {
+          max-width: 100%;
+        }
+        .MuiDialog-paper {
+          max-width: calc(100% - 16px);
+          margin: 8px;
+        }
+      }
     </style>
   </head>
   <body>
