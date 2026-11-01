@@ -44,7 +44,16 @@ export function MobileNavigation({ page }: IProps): React.ReactElement {
       <BottomNavigation
         showLabels
         value={selected < 0 ? false : selected}
-        onChange={(_event, value: number) => Router.toPage(items[value].page)}
+        onChange={(_event, value: number) => {
+          const destination = items[value].page;
+          if (destination === Page.ActiveScripts) {
+            Router.toPage(Page.ActiveScripts, {});
+          } else if (destination === Page.Options) {
+            Router.toPage(Page.Options, {});
+          } else {
+            Router.toPage(destination);
+          }
+        }}
         sx={{
           height: 60,
           backgroundColor: "transparent",
