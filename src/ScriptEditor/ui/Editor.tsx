@@ -67,7 +67,7 @@ export function Editor({ onMount, onChange, onUnmount }: EditorProps) {
       if (!editorRef.current) return;
       if (mobileQuery.matches) {
         editorRef.current.updateOptions({
-          fontSize: 14,
+          fontSize: 13,
           minimap: { enabled: false },
           wordWrap: "on",
           scrollBeyondLastLine: false,
