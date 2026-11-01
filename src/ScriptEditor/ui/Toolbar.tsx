@@ -58,7 +58,12 @@ export function Toolbar({ editor, onSave, onRun, onBeautify }: IProps) {
 
   return (
     <>
-      <Box display="flex" flexDirection="row" sx={{ m: 1 }} alignItems="center">
+      <Box
+        display="flex"
+        flexDirection="row"
+        sx={{ m: 1, flexWrap: { xs: "wrap", sm: "nowrap" }, gap: { xs: 0.5, sm: 0 } }}
+        alignItems="center"
+      >
         <Button startIcon={<SettingsIcon />} onClick={openOptions} sx={{ mr: 1 }}>
           Options
         </Button>
@@ -114,7 +119,7 @@ export function Toolbar({ editor, onSave, onRun, onBeautify }: IProps) {
           </Button>
         </Tooltip>
         <DocumentationAutocomplete
-          sx={{ marginRight: "10px" }}
+          sx={{ marginRight: "10px", maxWidth: "100%", flex: { xs: "1 1 100%", sm: "0 0 auto" } }}
           onChange={(path, external) => {
             if (external) {
               openDocExternally(path);
