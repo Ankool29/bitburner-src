@@ -1,5 +1,6 @@
 name: Deploy mobile preview
 
+# Publishes the mobile-ui preview to this repository's GitHub Pages site.
 on:
   push:
     branches: [mobile-ui]
