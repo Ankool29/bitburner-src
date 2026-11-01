@@ -21,12 +21,19 @@ const useStyles = makeStyles()((theme: Theme) => ({
     display: "flex",
     flexDirection: "column",
     height: "calc(100vh - 16px)",
+    [theme.breakpoints.down("sm")]: {
+      height: "calc(100dvh - 88px)",
+    },
   },
   entries: {
     padding: 0,
     overflow: "scroll",
     flex: "0 1 auto",
     margin: "auto 0 0",
+    [theme.breakpoints.down("sm")]: {
+      flex: "1 1 auto",
+      minHeight: 0,
+    },
   },
   preformatted: {
     whiteSpace: "pre-wrap",
