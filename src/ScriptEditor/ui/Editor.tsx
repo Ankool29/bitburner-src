@@ -61,6 +61,30 @@ export function Editor({ onMount, onChange, onUnmount }: EditorProps) {
       glyphMargin: true,
     });
 
+    // Prefer a compact, touch-friendly editor on phones without changing desktop defaults.
+    const mobileQuery = window.matchMedia("(max-width: 600px)");
+    const applyMobileEditorOptions = (): void => {
+      if (!editorRef.current) return;
+      if (mobileQuery.matches) {
+        editorRef.current.updateOptions({
+          fontSize: 14,
+          minimap: { enabled: false },
+          wordWrap: "on",
+          scrollBeyondLastLine: false,
+          padding: { top: 8, bottom: 8 },
+          scrollbar: { horizontal: "hidden", verticalScrollbarSize: 12 },
+        });
+      } else {
+        editorRef.current.updateOptions({
+          minimap: { enabled: true },
+          wordWrap: "off",
+          scrollBeyondLastLine: true,
+        });
+      }
+    };
+    applyMobileEditorOptions();
+    mobileQuery.addEventListener("change", applyMobileEditorOptions);
+
     // After initializing monaco editor
     onMount(editorRef.current);
     subscription.current = editorRef.current.onDidChangeModelContent(() => {
@@ -81,6 +105,7 @@ export function Editor({ onMount, onChange, onUnmount }: EditorProps) {
     // Unmounting
     return () => {
       onUnmount();
+      mobileQuery.removeEventListener("change", applyMobileEditorOptions);
       subscription.current?.dispose();
       monaco.editor.getModels().forEach((model) => model.dispose());
       editorRef.current?.dispose();
