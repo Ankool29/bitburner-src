@@ -40,10 +40,19 @@ jobs:
       - name: Build game
         run: npm run build
 
+      - name: Prepare Pages directory
+        run: |
+          test -f .app/index.html
+          rm -rf site
+          mkdir site
+          cp -a .app/. site/
+          test -f site/index.html
+          test -d site/dist
+
       - name: Upload site
         uses: actions/upload-pages-artifact@v3
         with:
-          path: .app
+          path: ./site
 
       - name: Deploy to GitHub Pages
         id: deployment
