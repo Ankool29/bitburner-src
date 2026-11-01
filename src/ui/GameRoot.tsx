@@ -92,6 +92,9 @@ const useStyles = makeStyles()((theme: Theme) => ({
     padding: "8px",
     [theme.breakpoints.down("sm")]: {
       paddingBottom: "88px",
+      minWidth: 0,
+      maxWidth: "100%",
+      overflowX: "hidden",
     },
     minHeight: "100vh",
     boxSizing: "border-box",
