@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { BottomNavigation, BottomNavigationAction, Paper, Menu, MenuItem, ListItemIcon, ListItemText, Divider } from "@mui/material";
+import { BottomNavigation, BottomNavigationAction, Paper, Menu, MenuItem, ListItemIcon, ListItemText, Divider, IconButton } from "@mui/material";
 import TerminalIcon from "@mui/icons-material/Terminal";
 import CodeIcon from "@mui/icons-material/Code";
 import EqualizerIcon from "@mui/icons-material/Equalizer";
@@ -134,19 +134,22 @@ export function MobileNavigation({ page }: IProps): React.ReactElement {
           }}
           sx={{
             height: 60,
+            paddingRight: "64px",
             backgroundColor: "transparent",
             "& .MuiBottomNavigationAction-root": { minWidth: 0, padding: "6px 0" },
             "& .MuiBottomNavigationAction-label": { fontSize: "0.68rem" },
           }}
         >
           {items.map((item) => <BottomNavigationAction key={item.label} label={item.label} icon={item.icon} />)}
-          <BottomNavigationAction
-            label="Menu"
-            icon={<MenuIcon />}
-            onClick={(event) => setMenuAnchor(event.currentTarget)}
-            value="all-pages"
-          />
+
         </BottomNavigation>
+        <IconButton
+          aria-label="Menu"
+          onClick={(event) => setMenuAnchor(event.currentTarget)}
+          sx={{ position: "absolute", right: 12, top: 8, width: 48, height: 44 }}
+        >
+          <MenuIcon />
+        </IconButton>
       </Paper>
       <Menu
         anchorEl={menuAnchor}
