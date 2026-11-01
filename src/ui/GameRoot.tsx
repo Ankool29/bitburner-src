@@ -20,6 +20,7 @@ import type { PageContext, PageWithContext } from "./Router";
 import { isSimplePage, Page, pendingRouterActions, Router, setRouter } from "./Router";
 import { Overview } from "./React/Overview";
 import { SidebarRoot } from "../Sidebar/ui/SidebarRoot";
+import { MobileNavigation } from "./MobileNavigation";
 import { AugmentationsRoot } from "../Augmentation/ui/AugmentationsRoot";
 import { DevMenuRoot } from "../DevMenu";
 import { BladeburnerRoot } from "../Bladeburner/ui/BladeburnerRoot";
@@ -89,6 +90,9 @@ const useStyles = makeStyles()((theme: Theme) => ({
     margin: theme.spacing(0),
     flexGrow: 1,
     padding: "8px",
+    [theme.breakpoints.down("sm")]: {
+      paddingBottom: "88px",
+    },
     minHeight: "100vh",
     boxSizing: "border-box",
     width: "1px",
@@ -498,12 +502,15 @@ export function GameRoot(): React.ReactElement {
               </Overview>
               {withSidebar ? (
                 <Box display="flex" flexDirection="row" width="100%">
-                  <SidebarRoot page={pageWithContext.page} />
+                  <Box sx={{ display: { xs: "none", sm: "block" } }}>
+                    <SidebarRoot page={pageWithContext.page} />
+                  </Box>
                   <Box className={classes.root}>{mainPage}</Box>
                 </Box>
               ) : (
                 <Box className={classes.root}>{mainPage}</Box>
               )}
+              {withSidebar && <MobileNavigation page={pageWithContext.page} />}
               <Unclickable />
               <LogBoxManager hidden={hidePopups} />
               <AlertManager hidden={hidePopups} />
