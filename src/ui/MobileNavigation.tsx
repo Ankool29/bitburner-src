@@ -6,8 +6,7 @@ import EqualizerIcon from "@mui/icons-material/Equalizer";
 import PublicIcon from "@mui/icons-material/Public";
 import SettingsIcon from "@mui/icons-material/Settings";
 
-import { Page } from "./Router";
-import { Router } from "./Router";
+import { isSimplePage, Page, Router } from "./Router";
 
 interface IProps {
   page: Page;
@@ -50,7 +49,7 @@ export function MobileNavigation({ page }: IProps): React.ReactElement {
             Router.toPage(Page.ActiveScripts, {});
           } else if (destination === Page.Options) {
             Router.toPage(Page.Options, {});
-          } else {
+          } else if (isSimplePage(destination)) {
             Router.toPage(destination);
           }
         }}
