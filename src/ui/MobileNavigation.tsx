@@ -29,6 +29,8 @@ import { isSimplePage, Page, Router } from "./Router";
 import { Player } from "@player";
 import { Settings } from "../Settings/Settings";
 import { AugmentationName } from "@enums";
+import { playerHasDiscoveredGo } from "../Go/effects/effect";
+import { hasDarknetAccess } from "../DarkNet/utils/darknetAuthUtils";
 
 interface IProps {
   page: Page;
@@ -82,8 +84,8 @@ export function MobileNavigation({ page }: IProps): React.ReactElement {
       ...(Player.bladeburner ? [{ label: "Bladeburner", page: Page.Bladeburner, icon: <FormatBoldIcon /> }] : []),
       ...(Player.corporation ? [{ label: "Corporation", page: Page.Corporation, icon: <BusinessIcon /> }] : []),
       ...(Player.gang ? [{ label: "Gang", page: Page.Gang, icon: <SportsMmaIcon /> }] : []),
-      ...(Player.hasDiscoveredGo ? [{ label: "IPvGO", page: Page.Go, icon: <BorderInnerSharpIcon /> }] : []),
-      { label: "Darknet", page: Page.DarkNet, icon: <ShareIcon /> },
+      ...(playerHasDiscoveredGo() ? [{ label: "IPvGO", page: Page.Go, icon: <BorderInnerSharpIcon /> }] : []),
+      ...(hasDarknetAccess() ? [{ label: "Darknet", page: Page.DarkNet, icon: <ShareIcon /> }] : []),
     ]},
     { title: "AIDE ET PARAMÈTRES", pages: [
       { label: "Jalons", page: Page.Milestones, icon: <CheckIcon /> },
