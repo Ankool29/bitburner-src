@@ -11,6 +11,7 @@ import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 
 import SettingsIcon from "@mui/icons-material/Settings";
+import DeleteSweepIcon from "@mui/icons-material/DeleteSweep";
 
 import { makeTheme } from "./themes";
 
@@ -67,6 +68,19 @@ export function Toolbar({ editor, onSave, onRun, onBeautify }: IProps) {
           }}
         >
           Beautify
+        </Button>
+        <Button
+          color="error"
+          startIcon={<DeleteSweepIcon />}
+          disabled={!editor || editor.getValue().length === 0}
+          onClick={() => {
+            if (editor && window.confirm("Effacer tout le contenu de ce script ? Cette action ne supprimera pas le fichier.")) {
+              editor.setValue("");
+              editor.focus();
+            }
+          }}
+        >
+          Effacer
         </Button>
         <Button
           color={isUpdatingRAM ? "secondary" : "primary"}
