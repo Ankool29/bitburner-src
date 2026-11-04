@@ -32,6 +32,10 @@ export function Editor({ onMount, onChange, onUnmount }: EditorProps) {
   const subscription = useRef<monaco.IDisposable | null>(null);
 
   const { options } = useScriptEditorContext();
+  const optionsRef = useRef(options);
+  useEffect(() => {
+    optionsRef.current = options;
+  }, [options]);
 
   useEffect(() => {
     if (!containerDiv.current) return;
@@ -76,9 +80,12 @@ export function Editor({ onMount, onChange, onUnmount }: EditorProps) {
         });
       } else {
         editorRef.current.updateOptions({
-          minimap: { enabled: true },
-          wordWrap: "off",
+          fontSize: optionsRef.current.fontSize,
+          minimap: optionsRef.current.minimap,
+          wordWrap: optionsRef.current.wordWrap,
           scrollBeyondLastLine: true,
+          padding: { top: 0, bottom: 0 },
+          scrollbar: { horizontal: "auto", verticalScrollbarSize: 14 },
         });
       }
     };
@@ -115,5 +122,5 @@ export function Editor({ onMount, onChange, onUnmount }: EditorProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return <div ref={containerDiv} style={{ height: "1px", width: "100%", flexGrow: 1 }} />;
+  return <div ref={containerDiv} style={{ height: "1px", minHeight: 0, width: "100%", flexGrow: 1 }} />;
 }

@@ -121,7 +121,7 @@ export function Overview({ children, mode }: IProps): React.ReactElement {
   if (Router.page() === Page.BitVerse || Router.page() === Page.Loading || Router.page() === Page.Recovery)
     return <></>;
   return (
-    <Draggable handle=".drag" bounds="body" onStop={handleStop} defaultPosition={{ x, y }}>
+    <Draggable handle=".drag" cancel="button" bounds="body" onStop={handleStop} defaultPosition={{ x, y }}>
       <Paper className={classes.overviewContainer} square style={{ maxHeight: "100vh", overflowY: "auto" }}>
         <Box className="drag" onDoubleClick={() => setOpen((old) => !old)} ref={draggableRef}>
           <Box className={classes.header}>
@@ -131,18 +131,13 @@ export function Overview({ children, mode }: IProps): React.ReactElement {
             </Typography>
             <Button
               aria-label="expand or collapse character overview"
+              aria-expanded={open}
+              onClick={() => setOpen((old) => !old)}
               variant="text"
               size="small"
               className={classes.visibilityToggle}
             >
-              {
-                <CurrentIcon
-                  className={classes.icon}
-                  color="secondary"
-                  onClick={() => setOpen((old) => !old)}
-                  onTouchEnd={() => setOpen((old) => !old)}
-                />
-              }
+              <CurrentIcon className={classes.icon} color="secondary" />
             </Button>
           </Box>
         </Box>
