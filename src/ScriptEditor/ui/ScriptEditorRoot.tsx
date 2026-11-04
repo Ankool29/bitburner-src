@@ -1,6 +1,7 @@
 import type { ContentFilePath } from "../../Paths/ContentFile";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { Box, Collapse, useMediaQuery } from "@mui/material";
 import * as monaco from "monaco-editor";
 
 import type * as acorn from "acorn";
@@ -27,6 +28,8 @@ import { isUnsavedFile, getServerCode, makeModel, saveScript } from "./utils";
 import { OpenScript } from "./OpenScript";
 import { Tabs } from "./Tabs";
 import { Toolbar } from "./Toolbar";
+import { MobileScriptTools } from "./MobileScriptTools";
+import { useMobileEditorViewport } from "./useMobileEditorViewport";
 import { NoOpenScripts } from "./NoOpenScripts";
 import { ScriptEditorContextProvider, useScriptEditorContext } from "./ScriptEditorContext";
 import { useVimEditor } from "./useVimEditor";
@@ -65,6 +68,10 @@ let currentScript: OpenScript | null = null;
 function Root(props: IProps): React.ReactElement {
   const rerender = useRerender();
   const editorRef = useRef<IStandaloneCodeEditor | null>(null);
+  const [mountedEditor, setMountedEditor] = useState<IStandaloneCodeEditor | null>(null);
+  const [showMoreTools, setShowMoreTools] = useState(false);
+  const mobile = useMediaQuery("(max-width: 600px)");
+  const viewportRef = useMobileEditorViewport();
 
   // This is the workaround for a bug in monaco-editor: https://github.com/microsoft/monaco-editor/issues/4455
   const removeOutlineOfEditor = useCallback(() => {
@@ -349,6 +356,7 @@ function Root(props: IProps): React.ReactElement {
     // Required when switching between site navigation (e.g. from Script Editor -> Terminal and back)
     // the `useEffect()` for vim mode is called before editor is mounted.
     editorRef.current = editor;
+    setMountedEditor(editor);
 
     // Open current script. This happens when the player switch tabs and open the editor tab.
     if (props.files.size === 0 && currentScript !== null) {
@@ -586,28 +594,57 @@ function Root(props: IProps): React.ReactElement {
 
   return (
     <>
-      <div
-        style={{
+      <Box
+        ref={viewportRef}
+        sx={{
           display: currentScript !== null ? "flex" : "none",
           height: "100%",
           width: "100%",
           flexDirection: "column",
+          "@media (max-width: 600px)": {
+            position: "fixed",
+            top: "var(--mobile-editor-top, 0px)",
+            left: 0,
+            height: "calc(var(--mobile-editor-height, 100dvh) - 76px - env(safe-area-inset-bottom, 0px))",
+            minHeight: 0,
+            overflow: "hidden",
+            bgcolor: "background.default",
+            "& > *": { minHeight: 0 },
+          },
         }}
       >
-        <Tabs
-          scripts={openScripts}
-          currentScript={currentScript}
-          onTabClick={onTabClick}
-          onTabClose={onTabClose}
-          onTabUpdate={onTabUpdate}
-        />
+        <Box sx={{ flexShrink: 0, overflowX: "auto" }}>
+          <Tabs
+            scripts={openScripts}
+            currentScript={currentScript}
+            onTabClick={onTabClick}
+            onTabClose={onTabClose}
+            onTabUpdate={onTabUpdate}
+          />
+        </Box>
         <div style={{ flex: "0 0 5px" }} />
         <Editor onMount={onMount} onChange={updateCode} onUnmount={onUnmountEditor} />
 
         {statusBarRef.current}
 
-        <Toolbar onSave={save} onRun={run} editor={editorRef.current} onBeautify={beautify} />
-      </div>
+        {mobile && (
+          <MobileScriptTools
+            editor={mountedEditor}
+            onSave={save}
+            onRun={run}
+            showMore={showMoreTools}
+            onToggleMore={() => setShowMoreTools((value) => !value)}
+          />
+        )}
+        <Collapse
+          in={!mobile || showMoreTools}
+          sx={{ flexShrink: 0, overflowY: "auto", maxHeight: mobile ? "30dvh" : "none" }}
+        >
+          <Box id="mobile-editor-more">
+            <Toolbar onSave={save} onRun={run} editor={mountedEditor} onBeautify={beautify} />
+          </Box>
+        </Collapse>
+      </Box>
       {!currentScript && <NoOpenScripts />}
     </>
   );
