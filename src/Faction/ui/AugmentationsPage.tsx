@@ -1,3 +1,4 @@
+import { responsiveGrid } from "../../ui/React/ResponsiveLayout";
 import React, { useState, useMemo } from "react";
 import { Box, Button, Typography, Paper, Container, TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
@@ -200,7 +201,7 @@ export function AugmentationsPage({ faction }: { faction: Faction }): React.Reac
           <Box
             sx={{
               display: "grid",
-              gridTemplateColumns: `repeat(${faction.name === FactionName.ShadowsOfAnarchy ? "2" : "3"}, 1fr)`,
+              ...responsiveGrid(`repeat(${faction.name === FactionName.ShadowsOfAnarchy ? "2" : "3"}, 1fr)`),
               justifyItems: "center",
               my: 1,
             }}
@@ -211,7 +212,7 @@ export function AugmentationsPage({ faction }: { faction: Faction }): React.Reac
               <FavorInfo favor={faction.favor} boldLabel={true} />
             </Box>
           </Box>
-          <Box sx={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)" }}>
+          <Box sx={{ display: "grid", ...responsiveGrid("repeat(4, 1fr)") }}>
             <Button onClick={() => switchSortOrder(PurchaseAugmentationsOrderSetting.Cost)}>Sort by Cost</Button>
             <Button onClick={() => switchSortOrder(PurchaseAugmentationsOrderSetting.Reputation)}>
               Sort by Reputation

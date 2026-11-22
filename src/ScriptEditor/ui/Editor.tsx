@@ -1,3 +1,4 @@
+import { mobileQuery as mobileLayoutQuery } from "../../ui/React/ResponsiveLayout";
 import React, { useEffect, useRef } from "react";
 
 import * as monaco from "monaco-editor";
@@ -66,7 +67,7 @@ export function Editor({ onMount, onChange, onUnmount }: EditorProps) {
     });
 
     // Prefer a compact, touch-friendly editor on phones without changing desktop defaults.
-    const mobileQuery = window.matchMedia("(max-width: 600px)");
+    const mobileQuery = window.matchMedia(mobileLayoutQuery);
     const applyMobileEditorOptions = (): void => {
       if (!editorRef.current) return;
       if (mobileQuery.matches) {

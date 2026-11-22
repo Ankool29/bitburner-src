@@ -1,3 +1,4 @@
+import { responsiveGrid } from "../../ui/React/ResponsiveLayout";
 /**
  * React Component for displaying all of the player's installed Augmentations and
  * Source-Files.
@@ -77,7 +78,7 @@ export function InstalledAugmentations(): React.ReactElement {
     <Box sx={{ width: "100%" }}>
       <Paper sx={{ p: 1 }}>
         <Typography variant="h5">Installed Augmentations</Typography>
-        <Box sx={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}>
+        <Box sx={{ display: "grid", ...responsiveGrid("1fr 1fr") }}>
           <Tooltip title={"Sorts the Augmentations alphabetically"}>
             <Button sx={{ width: "100%" }} onClick={sortInOrder}>
               Sort Alphabetically
@@ -91,7 +92,7 @@ export function InstalledAugmentations(): React.ReactElement {
         </Box>
       </Paper>
       {sourceAugs.length > 0 ? (
-        <Paper sx={{ display: "grid", gridTemplateColumns: "1fr 3fr" }}>
+        <Paper sx={{ display: "grid", ...responsiveGrid("1fr 3fr") }}>
           <Box>
             <TextField
               style={{ width: "100%" }}

@@ -1,3 +1,4 @@
+import { mobileMedia } from "../../ui/React/ResponsiveLayout";
 import { Theme } from "@mui/material/styles";
 import { makeStyles } from "tss-react/mui";
 import { keyframes } from "tss-react";
@@ -450,10 +451,12 @@ export const boardStyles = makeStyles<unknown, Size | "background">({ uniqId: "b
       width: "calc(min(100vw - 250px, 90vh - 150px, 800px))",
       height: "calc(min(100vw - 250px, 90vh - 150px, 800px))",
       padding: "5px",
+      [mobileMedia]: { width: "min(100vw - 32px, 480px)", height: "min(100vw - 32px, 480px)", margin: "0 auto" },
     },
     boardFrame: {
       position: "relative",
       width: "752px",
+      [mobileMedia]: { width: "100%", overflow: "hidden" },
     },
     statusPageGameboard: {
       position: "relative",
@@ -509,6 +512,7 @@ export const boardStyles = makeStyles<unknown, Size | "background">({ uniqId: "b
       },
     },
     inlineFlexBox: {
+      [mobileMedia]: { flexWrap: "wrap" },
       display: "inline-flex",
       flexDirection: "row",
       width: "100%",
@@ -526,6 +530,7 @@ export const boardStyles = makeStyles<unknown, Size | "background">({ uniqId: "b
       animation: `${fadeLoop} 600ms ${theme.transitions.easing.easeInOut} infinite alternate`,
     },
     scoreBox: {
+      [mobileMedia]: { width: "auto", flexBasis: "100%", order: -1 },
       display: "inline-flex",
       flexDirection: "row",
       whiteSpace: "pre",

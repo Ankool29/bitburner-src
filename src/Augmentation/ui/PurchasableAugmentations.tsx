@@ -1,3 +1,4 @@
+import { responsiveGrid } from "../../ui/React/ResponsiveLayout";
 /**
  * React component for displaying a single augmentation for purchase through
  * the faction UI
@@ -130,7 +131,7 @@ export const PurchasableAugmentations = (props: IPurchasableAugsProps): React.Re
     <Container
       maxWidth="lg"
       disableGutters
-      sx={{ mx: 0, display: "grid", gridTemplateColumns: "repeat(1, 1fr)", gap: 0.75 }}
+      sx={{ mx: 0, display: "grid", ...responsiveGrid("repeat(1, 1fr)"), gap: 0.75 }}
     >
       {props.augNames.map((augName) => (
         <PurchasableAugmentation key={augName} parent={props} augName={augName} owned={false} />
@@ -183,7 +184,7 @@ export function PurchasableAugmentation(props: IPurchasableAugProps): React.Reac
       sx={{
         p: 0.5,
         display: "grid",
-        gridTemplateColumns: "minmax(0, 4fr) 1.4fr",
+        ...responsiveGrid("minmax(0, 4fr) 1.4fr"),
         gap: 1,
         opacity: props.owned ? 0.75 : 1,
         minWidth: "1100px",
@@ -238,7 +239,7 @@ export function PurchasableAugmentation(props: IPurchasableAugProps): React.Reac
         </Box>
 
         {props.owned || (
-          <Box sx={{ display: "grid", alignItems: "center", gridTemplateColumns: "1fr 1fr" }}>
+          <Box sx={{ display: "grid", alignItems: "center", ...responsiveGrid("1fr 1fr") }}>
             <Requirement
               fulfilled={cost === 0 || Player.money >= cost}
               value={formatMoney(cost)}

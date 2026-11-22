@@ -4,6 +4,8 @@
  * TThis subcomponent renders all of the buttons for traveling to different cities
  */
 import React, { useState } from "react";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { mobileQuery, ResponsiveScroll } from "../../ui/React/ResponsiveLayout";
 
 import { CityName } from "@enums";
 import { TravelConfirmationModal } from "./TravelConfirmationModal";
@@ -33,6 +35,8 @@ function travel(to: CityName): void {
 }
 
 export function TravelAgencyRoot(): React.ReactElement {
+  const mobile = useMediaQuery(mobileQuery);
+  const [showMap, setShowMap] = useState(false);
   const [open, setOpen] = useState(false);
   const [destination, setDestination] = useState(CityName.Sector12);
   useRerender(1000);
@@ -57,7 +61,12 @@ export function TravelAgencyRoot(): React.ReactElement {
           From {Player.city}, you can travel to any other city! A ticket costs{" "}
           <Money money={CONSTANTS.TravelCost} forPurchase={true} />.
         </Typography>
-        {Settings.DisableASCIIArt ? (
+        {mobile && !Settings.DisableASCIIArt && (
+          <Button onClick={() => setShowMap((value) => !value)}>
+            {showMap ? "Show destinations" : "Show world map"}
+          </Button>
+        )}
+        {Settings.DisableASCIIArt || (mobile && !showMap) ? (
           <>
             {Object.values(CityName)
               .filter((city: string) => city != Player.city)
@@ -75,7 +84,9 @@ export function TravelAgencyRoot(): React.ReactElement {
               })}
           </>
         ) : (
-          <WorldMap currentCity={Player.city} onTravel={(city: CityName) => startTravel(city)} />
+          <ResponsiveScroll label="World map (scroll horizontally)">
+            <WorldMap currentCity={Player.city} onTravel={(city: CityName) => startTravel(city)} />
+          </ResponsiveScroll>
         )}
       </Box>
       <TravelConfirmationModal

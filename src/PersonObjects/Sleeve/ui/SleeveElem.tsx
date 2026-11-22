@@ -1,3 +1,4 @@
+import { responsiveGrid } from "../../../ui/React/ResponsiveLayout";
 import { Box, Button, Paper, Tooltip, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { BladeburnerActionType, FactionWorkType, GymType, SpecialBladeburnerActionTypeForSleeve } from "@enums";
@@ -215,10 +216,10 @@ export function SleeveElem(props: SleeveElemProps): React.ReactElement {
   const checkingPreconditionsResult = props.sleeve.checkPreconditionsOfPurchasingAugmentations();
   return (
     <>
-      <Paper sx={{ p: 1, display: "grid", gridTemplateColumns: "1fr 1fr", width: "auto", gap: 1 }}>
+      <Paper sx={{ p: 1, display: "grid", ...responsiveGrid("1fr 1fr"), width: "auto", gap: 1 }}>
         <span>
           <StatsElement sleeve={props.sleeve} />
-          <Box display="grid" sx={{ gridTemplateColumns: "1fr 1fr", width: "100%" }}>
+          <Box display="grid" sx={{ ...responsiveGrid("1fr 1fr"), width: "100%" }}>
             <Button onClick={() => setStatsOpen(true)}>More Stats</Button>
             <Tooltip title={Player.money < CONSTANTS.TravelCost ? <Typography>Insufficient funds</Typography> : ""}>
               <span>

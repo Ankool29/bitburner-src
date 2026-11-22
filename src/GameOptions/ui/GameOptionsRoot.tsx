@@ -1,4 +1,5 @@
-import { Box, Container, Typography } from "@mui/material";
+import { mobileQuery, responsiveGrid } from "../../ui/React/ResponsiveLayout";
+import { Box, Button, Collapse, Container, Typography, useMediaQuery } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { GameOptionsSidebar } from "./GameOptionsSidebar";
 import { GameplayPage } from "./GameplayPage";
@@ -42,6 +43,8 @@ export const GameOptionsPageEvents = new EventEmitter<[OptionsTabName]>();
 
 export function GameOptionsRoot(props: IProps): React.ReactElement {
   const [currentTab, setCurrentTab] = useState<OptionsTabName>(props.tab ?? "System");
+  const mobile = useMediaQuery(mobileQuery);
+  const [navigationOpen, setNavigationOpen] = useState(false);
 
   useEffect(
     () =>
@@ -54,16 +57,28 @@ export function GameOptionsRoot(props: IProps): React.ReactElement {
   return (
     <Container disableGutters maxWidth="lg" sx={{ mx: 0 }}>
       <Typography variant="h4">Options</Typography>
-      <Box sx={{ display: "grid", gridTemplateColumns: "1fr 3fr", gap: 1 }}>
-        <GameOptionsSidebar
-          tab={currentTab}
-          setTab={setCurrentTab}
-          save={props.save}
-          export={props.export}
-          forceKill={props.forceKill}
-          softReset={props.softReset}
-          reactivateTutorial={props.reactivateTutorial}
-        />
+      <Box sx={{ display: "grid", ...responsiveGrid("1fr 3fr"), gap: 1 }}>
+        <Box>
+          {mobile && (
+            <Button aria-expanded={navigationOpen} onClick={() => setNavigationOpen((value) => !value)}>
+              {navigationOpen ? "Hide options navigation" : `Options navigation: ${currentTab}`}
+            </Button>
+          )}
+          <Collapse in={!mobile || navigationOpen}>
+            <GameOptionsSidebar
+              tab={currentTab}
+              setTab={(tab) => {
+                setCurrentTab(tab);
+                setNavigationOpen(false);
+              }}
+              save={props.save}
+              export={props.export}
+              forceKill={props.forceKill}
+              softReset={props.softReset}
+              reactivateTutorial={props.reactivateTutorial}
+            />
+          </Collapse>
+        </Box>
         {tabs[currentTab]}
       </Box>
     </Container>

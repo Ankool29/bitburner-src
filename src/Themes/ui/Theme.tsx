@@ -2,6 +2,7 @@ import React from "react";
 import { createTheme, ThemeProvider, Theme, StyledEngineProvider } from "@mui/material/styles";
 import { EventEmitter } from "../../utils/EventEmitter";
 import { Settings } from "../../Settings/Settings";
+import { ResponsiveLayout } from "../../ui/React/ResponsiveLayout";
 
 export const ThemeEvents = new EventEmitter<[]>();
 
@@ -439,6 +440,7 @@ export function refreshTheme(): void {
 
   const styleSheet =
     ":root {" +
+    `--bb-ui-font-size: ${Math.max(16, Settings.styles.fontSize)}px;` +
     Object.entries(Settings.theme)
       .map(([k, v]) => `--bb-theme-${k}: ${v}`)
       .join(";") +
@@ -456,6 +458,9 @@ interface IProps {
 
 export const TTheme = ({ children }: IProps): React.ReactElement => (
   <StyledEngineProvider injectFirst>
-    <ThemeProvider theme={theme}>{children}</ThemeProvider>
+    <ThemeProvider theme={theme}>
+      <ResponsiveLayout />
+      {children}
+    </ThemeProvider>
   </StyledEngineProvider>
 );

@@ -1,3 +1,4 @@
+import { responsiveGrid } from "../../ui/React/ResponsiveLayout";
 /**
  * React Subcomponent for displaying a location's UI, when that location is a company
  *
@@ -129,7 +130,7 @@ export function CompanyLocation(props: IProps): React.ReactElement {
         )}
 
         {isEmployedHere && (
-          <Box sx={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}>
+          <Box sx={{ display: "grid", ...responsiveGrid("1fr 1fr") }}>
             <Button onClick={work}>Work</Button>
             <Button onClick={() => setQuitOpen(true)}>Quit</Button>
             <QuitJobModal

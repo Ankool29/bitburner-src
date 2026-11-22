@@ -1,3 +1,4 @@
+import { responsiveGrid } from "../../ui/React/ResponsiveLayout";
 import React, { useState } from "react";
 import { GangMemberCard } from "./GangMemberCard";
 import { RecruitButton } from "./RecruitButton";
@@ -47,7 +48,7 @@ export function GangMemberList(): React.ReactElement {
         text="Show only ascendable"
         tooltip={<>Filter the members list by whether or not the member can be ascended.</>}
       />
-      <Box display="grid" sx={{ gridTemplateColumns: "repeat(2, 1fr)" }}>
+      <Box display="grid" sx={{ ...responsiveGrid("repeat(2, 1fr)") }}>
         {members.map((member: GangMember) => (
           <GangMemberCard key={member.name} member={member} />
         ))}

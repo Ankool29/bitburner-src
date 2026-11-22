@@ -1,5 +1,17 @@
+import { mobileMedia } from "./React/ResponsiveLayout";
+import { OverviewEvents } from "./React/Overview";
 import React, { useState } from "react";
-import { BottomNavigation, BottomNavigationAction, Paper, Menu, MenuItem, ListItemIcon, ListItemText, Divider, IconButton } from "@mui/material";
+import {
+  BottomNavigation,
+  BottomNavigationAction,
+  Paper,
+  Menu,
+  MenuItem,
+  ListItemIcon,
+  ListItemText,
+  Divider,
+  IconButton,
+} from "@mui/material";
 import TerminalIcon from "@mui/icons-material/Terminal";
 import CodeIcon from "@mui/icons-material/Code";
 import EqualizerIcon from "@mui/icons-material/Equalizer";
@@ -52,44 +64,59 @@ export function MobileNavigation({ page }: IProps): React.ReactElement {
   ];
   const selected = items.findIndex((item) => item.page === page);
 
-  const canOpenAugmentations = Player.augmentations.length > 0 ||
-    Player.queuedAugmentations.length > 0 || Player.exploits.length > 0;
+  const canOpenAugmentations =
+    Player.augmentations.length > 0 || Player.queuedAugmentations.length > 0 || Player.exploits.length > 0;
   const entries: { title: string; pages: MenuEntry[] }[] = [
-    { title: "HACKING", pages: [
-      { label: "Terminal", page: Page.Terminal, icon: <TerminalIcon /> },
-      { label: "Éditeur de scripts", page: Page.ScriptEditor, icon: <CodeIcon /> },
-      { label: "Scripts actifs", page: Page.ActiveScripts, icon: <ComputerIcon /> },
-      { label: "Programmes", page: Page.CreateProgram, icon: <BugReportIcon /> },
-      { label: "Erreurs récentes", page: Page.RecentErrors, icon: <BugReportIcon /> },
-      { label: "Scripts arrêtés", page: Page.RecentlyKilledScripts, icon: <BugReportIcon /> },
-    ]},
-    { title: "PERSONNAGE", pages: [
-      { label: "Statistiques", page: Page.Stats, icon: <EqualizerIcon /> },
-      { label: "Factions", page: Page.Factions, icon: <ContactsIcon /> },
-      ...(canOpenAugmentations ? [{ label: "Augmentations", page: Page.Augmentations, icon: <DoubleArrowIcon /> }] : []),
-      { label: "Hacknet", page: Page.Hacknet, icon: <AccountTreeIcon /> },
-      ...(Player.sleeves.length > 0 ? [{ label: "Sleeves", page: Page.Sleeves, icon: <PeopleAltIcon /> }] : []),
-      ...(Player.canAccessGrafting() ? [{ label: "Greffe", page: Page.Grafting, icon: <BiotechIcon /> }] : []),
-      ...(Player.augmentations.some((aug) => aug.name === AugmentationName.StaneksGift1)
-        ? [{ label: "Cadeau de Stanek", page: Page.StaneksGift, icon: <DoubleArrowIcon /> }] : []),
-    ]},
-    { title: "MONDE", pages: [
-      { label: "Ville", page: Page.City, icon: <LocationCityIcon /> },
-      { label: "Voyage", page: Page.Travel, icon: <AirplanemodeActiveIcon /> },
-      ...(Object.values(Player.jobs).length > 0 ? [{ label: "Emploi", page: Page.Job, icon: <WorkIcon /> }] : []),
-      ...(Player.hasWseAccount ? [{ label: "Bourse", page: Page.StockMarket, icon: <TrendingUpIcon /> }] : []),
-      ...(Player.bladeburner ? [{ label: "Bladeburner", page: Page.Bladeburner, icon: <FormatBoldIcon /> }] : []),
-      ...(Player.corporation ? [{ label: "Corporation", page: Page.Corporation, icon: <BusinessIcon /> }] : []),
-      ...(Player.gang ? [{ label: "Gang", page: Page.Gang, icon: <SportsMmaIcon /> }] : []),
-      ...(playerHasDiscoveredGo() ? [{ label: "IPvGO", page: Page.Go, icon: <BorderInnerSharpIcon /> }] : []),
-      ...(hasDarknetAccess() ? [{ label: "Darknet", page: Page.DarkNet, icon: <ShareIcon /> }] : []),
-    ]},
-    { title: "AIDE ET PARAMÈTRES", pages: [
-      { label: "Jalons", page: Page.Milestones, icon: <CheckIcon /> },
-      { label: "Documentation", page: Page.Documentation, icon: <HelpIcon /> },
-      { label: "Succès", page: Page.Achievements, icon: <EmojiEventsIcon /> },
-      { label: "Options", page: Page.Options, icon: <SettingsIcon /> },
-    ]},
+    {
+      title: "HACKING",
+      pages: [
+        { label: "Terminal", page: Page.Terminal, icon: <TerminalIcon /> },
+        { label: "Éditeur de scripts", page: Page.ScriptEditor, icon: <CodeIcon /> },
+        { label: "Scripts actifs", page: Page.ActiveScripts, icon: <ComputerIcon /> },
+        { label: "Programmes", page: Page.CreateProgram, icon: <BugReportIcon /> },
+        { label: "Erreurs récentes", page: Page.RecentErrors, icon: <BugReportIcon /> },
+        { label: "Scripts arrêtés", page: Page.RecentlyKilledScripts, icon: <BugReportIcon /> },
+      ],
+    },
+    {
+      title: "PERSONNAGE",
+      pages: [
+        { label: "Statistiques", page: Page.Stats, icon: <EqualizerIcon /> },
+        { label: "Factions", page: Page.Factions, icon: <ContactsIcon /> },
+        ...(canOpenAugmentations
+          ? [{ label: "Augmentations", page: Page.Augmentations, icon: <DoubleArrowIcon /> }]
+          : []),
+        { label: "Hacknet", page: Page.Hacknet, icon: <AccountTreeIcon /> },
+        ...(Player.sleeves.length > 0 ? [{ label: "Sleeves", page: Page.Sleeves, icon: <PeopleAltIcon /> }] : []),
+        ...(Player.canAccessGrafting() ? [{ label: "Greffe", page: Page.Grafting, icon: <BiotechIcon /> }] : []),
+        ...(Player.augmentations.some((aug) => aug.name === AugmentationName.StaneksGift1)
+          ? [{ label: "Cadeau de Stanek", page: Page.StaneksGift, icon: <DoubleArrowIcon /> }]
+          : []),
+      ],
+    },
+    {
+      title: "MONDE",
+      pages: [
+        { label: "Ville", page: Page.City, icon: <LocationCityIcon /> },
+        { label: "Voyage", page: Page.Travel, icon: <AirplanemodeActiveIcon /> },
+        ...(Object.values(Player.jobs).length > 0 ? [{ label: "Emploi", page: Page.Job, icon: <WorkIcon /> }] : []),
+        ...(Player.hasWseAccount ? [{ label: "Bourse", page: Page.StockMarket, icon: <TrendingUpIcon /> }] : []),
+        ...(Player.bladeburner ? [{ label: "Bladeburner", page: Page.Bladeburner, icon: <FormatBoldIcon /> }] : []),
+        ...(Player.corporation ? [{ label: "Corporation", page: Page.Corporation, icon: <BusinessIcon /> }] : []),
+        ...(Player.gang ? [{ label: "Gang", page: Page.Gang, icon: <SportsMmaIcon /> }] : []),
+        ...(playerHasDiscoveredGo() ? [{ label: "IPvGO", page: Page.Go, icon: <BorderInnerSharpIcon /> }] : []),
+        ...(hasDarknetAccess() ? [{ label: "Darknet", page: Page.DarkNet, icon: <ShareIcon /> }] : []),
+      ],
+    },
+    {
+      title: "AIDE ET PARAMÈTRES",
+      pages: [
+        { label: "Jalons", page: Page.Milestones, icon: <CheckIcon /> },
+        { label: "Documentation", page: Page.Documentation, icon: <HelpIcon /> },
+        { label: "Succès", page: Page.Achievements, icon: <EmojiEventsIcon /> },
+        { label: "Options", page: Page.Options, icon: <SettingsIcon /> },
+      ],
+    },
   ];
 
   const navigate = (entry: MenuEntry): void => {
@@ -111,7 +138,15 @@ export function MobileNavigation({ page }: IProps): React.ReactElement {
       <Paper
         elevation={8}
         sx={{
-          display: { xs: "block", sm: "none" },
+          display: "none",
+          [mobileMedia]: {
+            display: "block",
+            top: "calc(var(--bb-ui-top, 0px) + var(--bb-ui-height, 100dvh) - 60px - env(safe-area-inset-bottom, 0px))",
+            bottom: "auto",
+            left: "var(--bb-ui-left, 0px)",
+            right: "auto",
+            width: "var(--bb-ui-width, 100vw)",
+          },
           position: "fixed",
           left: 0,
           right: 0,
@@ -137,8 +172,9 @@ export function MobileNavigation({ page }: IProps): React.ReactElement {
             "& .MuiBottomNavigationAction-label": { fontSize: "0.68rem" },
           }}
         >
-          {items.map((item) => <BottomNavigationAction key={item.label} label={item.label} icon={item.icon} />)}
-
+          {items.map((item) => (
+            <BottomNavigationAction key={item.label} label={item.label} icon={item.icon} />
+          ))}
         </BottomNavigation>
         <IconButton
           aria-label="Menu"
@@ -156,11 +192,28 @@ export function MobileNavigation({ page }: IProps): React.ReactElement {
         transformOrigin={{ vertical: "bottom", horizontal: "right" }}
         PaperProps={{ sx: { maxHeight: "75vh", width: "min(92vw, 360px)", mb: 1 } }}
       >
+        <MenuItem
+          onClick={() => setMenuAnchor(null)}
+          sx={{ position: "sticky", top: 0, zIndex: 1, bgcolor: "background.paper" }}
+        >
+          Fermer le menu
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            setMenuAnchor(null);
+            OverviewEvents.emit();
+          }}
+        >
+          Overview
+        </MenuItem>
         {entries.map((group, index) => (
           <React.Fragment key={group.title}>
             {index > 0 && <Divider />}
             <MenuItem disabled sx={{ opacity: "1 !important", minHeight: 34 }}>
-              <ListItemText primary={group.title} primaryTypographyProps={{ variant: "caption", color: "text.secondary", fontWeight: "bold" }} />
+              <ListItemText
+                primary={group.title}
+                primaryTypographyProps={{ variant: "caption", color: "text.secondary", fontWeight: "bold" }}
+              />
             </MenuItem>
             {group.pages.map((entry) => (
               <MenuItem key={entry.label} selected={page === entry.page} onClick={() => navigate(entry)}>

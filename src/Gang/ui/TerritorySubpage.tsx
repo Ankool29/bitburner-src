@@ -1,3 +1,4 @@
+import { responsiveGrid } from "../../ui/React/ResponsiveLayout";
 import React, { useState } from "react";
 
 import { Container, Button, Paper, Box, Tooltip, Switch, FormControlLabel, Typography } from "@mui/material";
@@ -123,7 +124,7 @@ export function TerritorySubpage(): React.ReactElement {
           <b>Territory:</b> {formatTerritory(AllGangs[gang.facName].territory)}% <br />
         </Typography>
       </Box>
-      <Box sx={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)" }}>
+      <Box sx={{ display: "grid", ...responsiveGrid("repeat(3, 1fr)") }}>
         {gangNames
           .sort((a, b) => {
             if (AllGangs[a].territory <= 0 && AllGangs[b].territory > 0) return 1;

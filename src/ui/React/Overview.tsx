@@ -11,6 +11,11 @@ import { Page, Router } from "../Router";
 import { Settings } from "../../Settings/Settings";
 import { Box, Button, Typography } from "@mui/material";
 import { debounce } from "lodash";
+import { useMediaQuery } from "@mui/material";
+import { mobileMedia, mobileQuery } from "./ResponsiveLayout";
+import { EventEmitter } from "../../utils/EventEmitter";
+
+export const OverviewEvents = new EventEmitter<[]>();
 
 const useStyles = makeStyles()({
   overviewContainer: {
@@ -63,13 +68,18 @@ export interface OverviewSettings {
 }
 
 export function Overview({ children, mode }: IProps): React.ReactElement {
+  const mobile = useMediaQuery(mobileQuery);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  useEffect(() => OverviewEvents.subscribe(() => setMobileOpen(true)), []);
   const draggableRef = useRef<HTMLDivElement>(null);
   const [open, setOpen] = useState(Settings.overview.opened);
   const [x, setX] = useState(Settings.overview.x);
   const [y, setY] = useState(Settings.overview.y);
   const { classes } = useStyles();
 
-  const CurrentIcon = open ? KeyboardArrowUpIcon : KeyboardArrowDownIcon;
+  const expanded = mobile && mode === "overview" ? mobileOpen : open;
+  const toggle = () => (mobile && mode === "overview" ? setMobileOpen((value) => !value) : setOpen((value) => !value));
+  const CurrentIcon = expanded ? KeyboardArrowUpIcon : KeyboardArrowDownIcon;
   const LeftIcon = mode === "tutorial" ? SchoolIcon : EqualizerIcon;
   const header = mode === "tutorial" ? "Tutorial" : "Overview";
   const handleStop: DraggableEventHandler = (e, data) => {
@@ -121,9 +131,33 @@ export function Overview({ children, mode }: IProps): React.ReactElement {
   if (Router.page() === Page.BitVerse || Router.page() === Page.Loading || Router.page() === Page.Recovery)
     return <></>;
   return (
-    <Draggable handle=".drag" cancel="button" bounds="body" onStop={handleStop} defaultPosition={{ x, y }}>
-      <Paper className={classes.overviewContainer} square style={{ maxHeight: "100vh", overflowY: "auto" }}>
-        <Box className="drag" onDoubleClick={() => setOpen((old) => !old)} ref={draggableRef}>
+    <Draggable
+      handle=".drag"
+      cancel="button"
+      bounds="body"
+      disabled={mobile}
+      onStop={handleStop}
+      position={mobile ? { x: 0, y: 0 } : { x, y }}
+    >
+      <Paper
+        className={classes.overviewContainer}
+        square
+        style={mobile && mode === "overview" && !mobileOpen ? { display: "none" } : undefined}
+        sx={{
+          maxHeight: "100vh",
+          overflowY: "auto",
+          [mobileMedia]: {
+            top: "var(--bb-ui-top, 0px)",
+            right: "auto",
+            left: "calc(var(--bb-ui-left, 0px) + 8px)",
+            maxWidth: "calc(var(--bb-ui-width, 100vw) - 16px)",
+            maxHeight: "calc(var(--bb-ui-height, 100dvh) - 92px)",
+            "& > .drag": { flexShrink: 0 },
+            "& > .MuiCollapse-root": { overflowY: "auto" },
+          },
+        }}
+      >
+        <Box className="drag" onDoubleClick={toggle} ref={draggableRef}>
           <Box className={classes.header}>
             <LeftIcon color="secondary" className={classes.icon} sx={{ padding: "2px" }} />
             <Typography flexGrow={1} color="secondary">
@@ -131,8 +165,8 @@ export function Overview({ children, mode }: IProps): React.ReactElement {
             </Typography>
             <Button
               aria-label="expand or collapse character overview"
-              aria-expanded={open}
-              onClick={() => setOpen((old) => !old)}
+              aria-expanded={expanded}
+              onClick={toggle}
               variant="text"
               size="small"
               className={classes.visibilityToggle}
@@ -141,8 +175,8 @@ export function Overview({ children, mode }: IProps): React.ReactElement {
             </Button>
           </Box>
         </Box>
-        <Collapse in={open} className={classes.collapse}>
-          {children(open)}
+        <Collapse in={expanded} className={classes.collapse}>
+          {children(expanded)}
         </Collapse>
       </Paper>
     </Draggable>

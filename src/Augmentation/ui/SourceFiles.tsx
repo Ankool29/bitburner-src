@@ -1,3 +1,4 @@
+import { responsiveGrid } from "../../ui/React/ResponsiveLayout";
 import { ListItemButton, ListItemText, Paper } from "@mui/material";
 import Box from "@mui/material/Box";
 import List from "@mui/material/List";
@@ -106,7 +107,7 @@ export function SourceFilesElement(): React.ReactElement {
       <Paper sx={{ p: 1 }}>
         <Typography variant="h5">Source Files</Typography>
       </Paper>
-      <Paper sx={{ display: "grid", gridTemplateColumns: "1fr 3fr" }}>
+      <Paper sx={{ display: "grid", ...responsiveGrid("1fr 3fr") }}>
         <Box>
           <List
             sx={{ height: 400, overflowY: "scroll", borderRight: `1px solid ${Settings.theme.welllight}` }}

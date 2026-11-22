@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Typography } from "@mui/material";
 import { Theme } from "@mui/material/styles";
+import { mobileMedia } from "../../ui/React/ResponsiveLayout";
 import { makeStyles } from "tss-react/mui";
 import _ from "lodash";
 
@@ -21,8 +22,8 @@ const useStyles = makeStyles()((theme: Theme) => ({
     display: "flex",
     flexDirection: "column",
     height: "calc(100vh - 16px)",
-    [theme.breakpoints.down("sm")]: {
-      height: "calc(100dvh - 88px)",
+    [mobileMedia]: {
+      height: "calc(var(--bb-ui-height, 100dvh) - 88px - env(safe-area-inset-bottom, 0px))",
     },
   },
   entries: {
@@ -30,10 +31,10 @@ const useStyles = makeStyles()((theme: Theme) => ({
     overflow: "scroll",
     flex: "0 1 auto",
     margin: "auto 0 0",
-    [theme.breakpoints.down("sm")]: {
+    [mobileMedia]: {
       flex: "1 1 auto",
       minHeight: 0,
-      fontSize: "0.82rem",
+      fontSize: "1rem",
       lineHeight: 1.35,
     },
   },

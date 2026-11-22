@@ -1,3 +1,4 @@
+import { responsiveGrid } from "../../../ui/React/ResponsiveLayout";
 import type { Augmentation } from "../../../Augmentation/Augmentation";
 
 import { Player } from "@player";
@@ -126,7 +127,7 @@ export const GraftingRoot = (): React.ReactElement => {
       <Box sx={{ my: 3 }}>
         <Paper sx={{ p: 1 }}>
           <Typography variant="h5">Graft Augmentations</Typography>
-          <Box sx={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}>
+          <Box sx={{ display: "grid", ...responsiveGrid("1fr 1fr") }}>
             <Button sx={{ width: "100%" }} onClick={() => switchSortOrder(PurchaseAugmentationsOrderSetting.Cost)}>
               Sort by Cost
             </Button>
@@ -136,7 +137,7 @@ export const GraftingRoot = (): React.ReactElement => {
           </Box>
         </Paper>
         {getGraftingAvailableAugs().length > 0 ? (
-          <Paper sx={{ mb: 1, width: "fit-content", display: "grid", gridTemplateColumns: "1fr 3fr" }}>
+          <Paper sx={{ mb: 1, width: "fit-content", display: "grid", ...responsiveGrid("1fr 3fr") }}>
             <Box>
               <TextField
                 style={{ width: "100%" }}

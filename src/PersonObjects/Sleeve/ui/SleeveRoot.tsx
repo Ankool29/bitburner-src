@@ -1,3 +1,4 @@
+import { responsiveGrid } from "../../../ui/React/ResponsiveLayout";
 import React, { useState } from "react";
 
 import { Box, Typography, Button, Container } from "@mui/material";
@@ -37,7 +38,7 @@ export function SleeveRoot(): React.ReactElement {
       </Container>
 
       <Button onClick={() => setFAQOpen(true)}>FAQ</Button>
-      <Box display="grid" sx={{ gridTemplateColumns: "repeat(2, 1fr)", mt: 1 }}>
+      <Box display="grid" sx={{ ...responsiveGrid("repeat(2, 1fr)"), mt: 1 }}>
         {Player.sleeves.map((sleeve, i) => (
           <SleeveElem key={i} rerender={rerender} sleeve={sleeve} />
         ))}

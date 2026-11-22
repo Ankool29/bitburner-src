@@ -1,3 +1,4 @@
+import { responsiveGrid } from "./React/ResponsiveLayout";
 import { Paper, Table, TableBody, Box, IconButton, Typography, Container, Tooltip } from "@mui/material";
 import { MoreHoriz, Info } from "@mui/icons-material";
 import React, { useState } from "react";
@@ -251,7 +252,7 @@ export function CharacterStats(): React.ReactElement {
   return (
     <Container maxWidth="lg" disableGutters sx={{ mx: 0 }}>
       <Typography variant="h4">Stats</Typography>
-      <Box sx={{ display: "grid", gridTemplateColumns: "1fr 1fr", minWidth: "fit-content", mb: 1, gap: 1 }}>
+      <Box sx={{ display: "grid", ...responsiveGrid("1fr 1fr"), minWidth: "fit-content", mb: 1, gap: 1 }}>
         <Paper sx={{ p: 1 }}>
           <Typography variant="h5">General</Typography>
           <Table>
@@ -370,7 +371,7 @@ export function CharacterStats(): React.ReactElement {
             </Tooltip>
           )}
         </Typography>
-        <Box sx={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 1 }}>
+        <Box sx={{ display: "grid", ...responsiveGrid("1fr 1fr"), gap: 1 }}>
           <Box>
             <MultiplierTable
               rows={[

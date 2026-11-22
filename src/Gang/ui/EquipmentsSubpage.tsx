@@ -1,3 +1,4 @@
+import { responsiveGrid } from "../../ui/React/ResponsiveLayout";
 import React, { useState } from "react";
 import { useGang } from "./Context";
 
@@ -110,7 +111,7 @@ function GangMemberUpgradePanel(props: IPanelProps): React.ReactElement {
   };
   return (
     <Paper>
-      <Box display="grid" sx={{ gridTemplateColumns: "1fr 1fr", m: 1, gap: 1 }}>
+      <Box display="grid" sx={{ ...responsiveGrid("1fr 1fr"), m: 1, gap: 1 }}>
         <span>
           <Typography variant="h5" color="primary">
             {props.member.name} ({props.member.task})
@@ -188,7 +189,7 @@ function GangMemberUpgradePanel(props: IPanelProps): React.ReactElement {
             {(categories[currentCategory][0] as GangMemberUpgrade[]).length === 0 && (
               <Typography>All upgrades owned!</Typography>
             )}
-            <Box display="grid" sx={{ gridTemplateColumns: "1fr 1fr" }}>
+            <Box display="grid" sx={{ ...responsiveGrid("1fr 1fr") }}>
               {(categories[currentCategory][0] as GangMemberUpgrade[]).map((upg) => (
                 <UpgradeButton key={upg.name} rerender={rerender} member={props.member} upg={upg} />
               ))}
@@ -198,7 +199,7 @@ function GangMemberUpgradePanel(props: IPanelProps): React.ReactElement {
       </Box>
 
       <Typography sx={{ mx: 1 }}>Purchased Upgrades: </Typography>
-      <Box display="grid" sx={{ gridTemplateColumns: "repeat(4, 1fr)", m: 1 }}>
+      <Box display="grid" sx={{ ...responsiveGrid("repeat(4, 1fr)"), m: 1 }}>
         {props.member.upgrades.map((upg: string) => (
           <PurchasedUpgrade key={upg} upgName={upg} />
         ))}
@@ -246,7 +247,7 @@ export function EquipmentsSubpage(): React.ReactElement {
         sx={{ m: 1, width: "15%" }}
       />
 
-      <Box display="grid" sx={{ gridTemplateColumns: "1fr 1fr", width: "100%" }}>
+      <Box display="grid" sx={{ ...responsiveGrid("1fr 1fr"), width: "100%" }}>
         {members.map((member: GangMember) => (
           <GangMemberUpgradePanel key={member.name} member={member} />
         ))}

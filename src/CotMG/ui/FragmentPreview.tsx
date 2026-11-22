@@ -24,7 +24,7 @@ export function FragmentPreview(props: IProps): React.ReactElement {
   }
 
   return (
-    <Table>
+    <Table data-game-grid>
       <TableBody>{elems}</TableBody>
     </Table>
   );
