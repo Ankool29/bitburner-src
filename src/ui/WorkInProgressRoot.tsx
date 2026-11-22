@@ -1,3 +1,4 @@
+import { responsiveGrid } from "./React/ResponsiveLayout";
 import React from "react";
 import { Box, Button, Container, Paper, Table, TableBody, Tooltip, Typography } from "@mui/material";
 
@@ -499,7 +500,7 @@ export function WorkInProgressRoot(): React.ReactElement {
             <Box
               display="grid"
               sx={{
-                gridTemplateColumns: `repeat(${Object.keys(workInfo.progress).length}, 1fr)`,
+                ...responsiveGrid(`repeat(${Object.keys(workInfo.progress).length}, 1fr)`),
                 width: "100%",
                 justifyItems: "center",
                 textAlign: "center",
@@ -521,7 +522,7 @@ export function WorkInProgressRoot(): React.ReactElement {
           </Box>
         )}
 
-        <Box display="grid" sx={{ gridTemplateColumns: `repeat(${Object.keys(workInfo.buttons).length}, 1fr)` }}>
+        <Box display="grid" sx={{ ...responsiveGrid(`repeat(${Object.keys(workInfo.buttons).length}, 1fr)`) }}>
           {workInfo.stopTooltip ? (
             <Tooltip title={tooltipInfo}>
               <Button onClick={workInfo.buttons.cancel}>{workInfo.stopText}</Button>

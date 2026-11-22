@@ -16,7 +16,7 @@ export function DummyGrid(props: IProps): React.ReactElement {
   const ghostGrid = zeros(props.width, props.height);
   return (
     <Box>
-      <Table sx={{ width: props.width, height: props.height }}>
+      <Table data-game-grid sx={{ width: props.width, height: props.height }}>
         <Grid
           width={props.width}
           height={props.height}

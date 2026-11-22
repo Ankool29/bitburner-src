@@ -1,3 +1,4 @@
+import { ResponsiveScroll } from "../../ui/React/ResponsiveLayout";
 import type { BoardState } from "../Types";
 
 import React from "react";
@@ -30,36 +31,38 @@ export function GoGameboard({ boardState, traditional, clickHandler, hover }: Go
   const { classes } = boardStyles({});
 
   return (
-    <Grid container id="goGameboard" className={`${classes.board} ${traditional ? classes.traditional : ""}`}>
-      {boardState.board.map((column, y) => {
-        const yIndex = boardState.board[0].length - y - 1;
-        return (
-          <Grid container key={`column_${yIndex}`} item className={getSizeClass(boardSize, classes)}>
-            {column.map((point, x: number) => {
-              const xIndex = x;
-              return (
-                <Grid
-                  item
-                  key={`point_${xIndex}_${yIndex}`}
-                  onClick={() => clickHandler(xIndex, yIndex)}
-                  className={getSizeClass(boardSize, classes)}
-                >
-                  <GoPoint
-                    state={boardState}
-                    x={xIndex}
-                    y={yIndex}
-                    traditional={traditional}
-                    hover={hover}
-                    valid={pointIsValid(xIndex, yIndex)}
-                    emptyPointOwner={ownedEmptyNodes[xIndex]?.[yIndex]}
-                    pointHighlight={boardState.highlightedPoints[xIndex][yIndex]}
-                  />
-                </Grid>
-              );
-            })}
-          </Grid>
-        );
-      })}
-    </Grid>
+    <ResponsiveScroll label="IPvGO board (scroll horizontally)">
+      <Grid container id="goGameboard" className={`${classes.board} ${traditional ? classes.traditional : ""}`}>
+        {boardState.board.map((column, y) => {
+          const yIndex = boardState.board[0].length - y - 1;
+          return (
+            <Grid container key={`column_${yIndex}`} item className={getSizeClass(boardSize, classes)}>
+              {column.map((point, x: number) => {
+                const xIndex = x;
+                return (
+                  <Grid
+                    item
+                    key={`point_${xIndex}_${yIndex}`}
+                    onClick={() => clickHandler(xIndex, yIndex)}
+                    className={getSizeClass(boardSize, classes)}
+                  >
+                    <GoPoint
+                      state={boardState}
+                      x={xIndex}
+                      y={yIndex}
+                      traditional={traditional}
+                      hover={hover}
+                      valid={pointIsValid(xIndex, yIndex)}
+                      emptyPointOwner={ownedEmptyNodes[xIndex]?.[yIndex]}
+                      pointHighlight={boardState.highlightedPoints[xIndex][yIndex]}
+                    />
+                  </Grid>
+                );
+              })}
+            </Grid>
+          );
+        })}
+      </Grid>
+    </ResponsiveScroll>
   );
 }

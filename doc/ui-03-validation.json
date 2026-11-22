@@ -1,0 +1,78 @@
+{
+  "base": "7d011b5afe17bd48ae7e826ba5707390f8433e68",
+  "viewports": [
+    [390, 844],
+    [844, 390],
+    [360, 740],
+    [1280, 800]
+  ],
+  "window_checks_passed": 74,
+  "window_errors": [],
+  "page_visits": 116,
+  "mobile_page_visits": 87,
+  "mobile_uncontained_overflows": 0,
+  "page_runtime_errors": [],
+  "desktop_legacy_findings": [
+    {
+      "route": "FactionAugmentations",
+      "findings": [
+        {
+          "tag": "DIV",
+          "text": "BuyNeuroFlux Governor - Level 1$750.000k500.000 re",
+          "width": 1110,
+          "right": 1366
+        },
+        {
+          "tag": "DIV",
+          "text": "$750.000k500.000 rep",
+          "width": 283,
+          "right": 1361
+        },
+        {
+          "tag": "P",
+          "text": "500.000 rep",
+          "width": 142,
+          "right": 1361
+        },
+        {
+          "tag": "DIV",
+          "text": "BuyBitWire$10.000m3.750k rep",
+          "width": 1110,
+          "right": 1366
+        },
+        {
+          "tag": "DIV",
+          "text": "$10.000m3.750k rep",
+          "width": 283,
+          "right": 1361
+        }
+      ]
+    },
+    {
+      "route": "Documentation",
+      "findings": [
+        {
+          "tag": "DIV",
+          "text": "BackHome",
+          "width": 1280,
+          "right": 1536
+        }
+      ]
+    }
+  ],
+  "jest": {
+    "suites": 61,
+    "passed": 4591,
+    "skipped": 4,
+    "snapshots": 141
+  },
+  "physical_android_tested": false,
+  "keyboard": "visualViewport simulation",
+  "production_checks_passed": 20,
+  "production_errors": [],
+  "build": {
+    "result": "passed",
+    "webpack_warnings": 3,
+    "warnings": "bundle sizes"
+  }
+}

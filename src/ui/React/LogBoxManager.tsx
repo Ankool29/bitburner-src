@@ -1,4 +1,6 @@
-import React, { useEffect, useRef, useCallback, useMemo } from "react";
+import React, { useEffect, useRef, useCallback, useMemo, useState } from "react";
+import { Button, useMediaQuery } from "@mui/material";
+import { mobileQuery, useAvailableViewport, type AvailableViewport } from "./ResponsiveLayout";
 import { EventEmitter } from "../../utils/EventEmitter";
 import { RunningScript } from "../../Script/RunningScript";
 import { killWorkerScriptByPid } from "../../Netscript/killWorkerScript";
@@ -100,6 +102,10 @@ let logs: Log[] = [];
 
 export function LogBoxManager({ hidden }: { hidden: boolean }): React.ReactElement {
   const rerender = useRerender();
+  const mobile = useMediaQuery(mobileQuery);
+  const viewport = useAvailableViewport();
+  const [activeId, setActiveId] = useState<number | null>(null);
+  const active = logs.find((log) => log.id === activeId) ?? logs[logs.length - 1];
 
   //Close tail windows by their pid.
   const closePid = useCallback(
@@ -113,11 +119,16 @@ export function LogBoxManager({ hidden }: { hidden: boolean }): React.ReactEleme
   useEffect(
     () =>
       LogBoxEvents.subscribe((script: RunningScript) => {
-        if (logs.some((l) => l.script.pid === script.pid)) return;
+        const existing = logs.find((log) => log.script.pid === script.pid);
+        if (existing) {
+          setActiveId(existing.id);
+          return;
+        }
         logs.push({
           id: script.pid,
           script,
         });
+        setActiveId(script.pid);
         rerender();
       }),
     [rerender],
@@ -150,8 +161,43 @@ export function LogBoxManager({ hidden }: { hidden: boolean }): React.ReactEleme
   return (
     <>
       {logs.map((log) => (
-        <LogWindow hidden={hidden} key={log.id} script={log.script} onClose={() => close(log.id)} />
+        <LogWindow
+          hidden={hidden || (mobile && active?.id !== log.id)}
+          key={log.id}
+          script={log.script}
+          onClose={() => close(log.id)}
+          mobile={mobile}
+          viewport={viewport}
+        />
       ))}
+      {mobile && !hidden && logs.length > 0 && (
+        <Box
+          role="toolbar"
+          aria-label="Script log windows"
+          className="bb-scroll-region"
+          sx={{
+            position: "fixed",
+            left: viewport.left + 8,
+            top: viewport.top + 8,
+            width: viewport.width - 16,
+            display: "flex",
+            overflowX: "auto",
+            bgcolor: "background.paper",
+            zIndex: 1500,
+          }}
+        >
+          {logs.map((log) => (
+            <Button
+              key={log.id}
+              aria-pressed={active?.id === log.id}
+              onClick={() => setActiveId(log.id)}
+              sx={{ flexShrink: 0 }}
+            >
+              {log.script.filename} #{log.id}
+            </Button>
+          ))}
+        </Box>
+      )}
     </>
   );
 }
@@ -160,6 +206,8 @@ interface LogWindowProps {
   script: RunningScript;
   onClose: () => void;
   hidden: boolean;
+  mobile: boolean;
+  viewport: AvailableViewport;
 }
 
 const useStyles = makeStyles()({
@@ -182,7 +230,7 @@ const useStyles = makeStyles()({
   },
 });
 
-function LogWindow({ hidden, script, onClose }: LogWindowProps): React.ReactElement {
+function LogWindow({ hidden, script, onClose, mobile, viewport }: LogWindowProps): React.ReactElement {
   const draggableRef = useRef<HTMLDivElement>(null);
   const rootRef = useRef<Draggable>(null);
   const { classes } = useStyles();
@@ -212,10 +260,10 @@ function LogWindow({ hidden, script, onClose }: LogWindowProps): React.ReactElem
   const updateLayer = useCallback(() => {
     const c = container.current;
     if (c === null) return;
-    c.style.zIndex = logBoxBaseZIndex + layerCounter + "";
+    c.style.zIndex = logBoxBaseZIndex + (mobile ? layerCounter % 1000 : layerCounter) + "";
     layerCounter++;
     rerender();
-  }, [rerender]);
+  }, [rerender, mobile]);
 
   useEffect(() => {
     propsRef.current.updateDOM();
@@ -298,7 +346,7 @@ function LogWindow({ hidden, script, onClose }: LogWindowProps): React.ReactElem
   const isOnScreen = (node: HTMLDivElement): boolean => {
     const bounds = node.getBoundingClientRect();
 
-    return !(bounds.right < 0 || bounds.bottom < 0 || bounds.left > innerWidth || bounds.top > outerWidth);
+    return !(bounds.right < 0 || bounds.bottom < 0 || bounds.left > innerWidth || bounds.top > innerHeight);
   };
 
   /**
@@ -328,8 +376,18 @@ function LogWindow({ hidden, script, onClose }: LogWindowProps): React.ReactElem
   };
 
   return (
-    <Draggable handle=".drag" onDrag={onDrag} ref={rootRef} onMouseDown={updateLayer}>
+    <Draggable
+      handle=".drag"
+      cancel="button"
+      disabled={mobile}
+      position={mobile ? { x: 0, y: 0 } : undefined}
+      onDrag={onDrag}
+      ref={rootRef}
+      onMouseDown={updateLayer}
+    >
       <Box
+        role="region"
+        aria-label={`Script log ${script.pid}`}
         display={hidden ? "none" : "flex"}
         sx={{
           flexFlow: "column",
@@ -337,66 +395,97 @@ function LogWindow({ hidden, script, onClose }: LogWindowProps): React.ReactElem
           zIndex: 1400,
           minWidth: `${minWindowSize[0]}px`,
           minHeight: `${minWindowSize[1]}px`,
-          ...(propsRef.current.minimized && {
-            border: "none",
-            margin: 0,
-            maxHeight: 0,
-            padding: 0,
-          }),
+          ...(mobile && { left: viewport.left + 8, top: viewport.top + 56, maxWidth: viewport.width - 16 }),
+          ...(!mobile &&
+            propsRef.current.minimized && {
+              border: "none",
+              margin: 0,
+              maxHeight: 0,
+              padding: 0,
+            }),
         }}
         ref={container}
       >
         <ResizableBox
-          width={propsRef.current.width}
-          height={propsRef.current.height}
+          width={mobile ? Math.max(150, viewport.width - 16) : propsRef.current.width}
+          height={
+            mobile ? (propsRef.current.minimized ? 48 : Math.max(48, viewport.height - 192)) : propsRef.current.height
+          }
+          resizeHandles={mobile ? [] : ["se"]}
           onResize={onResize}
           minConstraints={minWindowSize}
           handle={
-            <span
-              style={{
-                position: "absolute",
-                right: "-10px",
-                bottom: "-16px",
-                cursor: "nw-resize",
-                display: propsRef.current.minimized ? "none" : "inline-block",
-              }}
-            >
-              <ArrowForwardIosIcon color="primary" style={{ transform: "rotate(45deg)", fontSize: "1.75rem" }} />
-            </span>
+            mobile ? undefined : (
+              <span
+                style={{
+                  position: "absolute",
+                  right: "-10px",
+                  bottom: "-16px",
+                  cursor: "nw-resize",
+                  display: propsRef.current.minimized ? "none" : "inline-block",
+                }}
+              >
+                <ArrowForwardIosIcon color="primary" style={{ transform: "rotate(45deg)", fontSize: "1.75rem" }} />
+              </span>
+            )
           }
         >
           <>
-            <Paper className="drag" sx={{ display: "flex", alignItems: "center", cursor: "grab" }} ref={draggableRef}>
+            <Paper
+              className="drag"
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                cursor: mobile ? "default" : "grab",
+                height: mobile ? 48 : undefined,
+              }}
+              ref={draggableRef}
+            >
               {title()}
 
-              <span style={{ minWidth: "fit-content", height: `${minWindowSize[1]}px` }}>
+              <span style={{ minWidth: "fit-content", height: mobile ? 48 : minWindowSize[1], display: "flex" }}>
                 {!workerScripts.has(script.pid) ? (
-                  <IconButton title="Re-run script" className={classes.titleButton} onClick={run} onTouchEnd={run}>
+                  <IconButton
+                    title="Re-run script"
+                    aria-label="Re-run script"
+                    className={classes.titleButton}
+                    onClick={run}
+                  >
                     <PlayCircleIcon />
                   </IconButton>
                 ) : (
-                  <IconButton title="Stop script" className={classes.titleButton} onClick={kill} onTouchEnd={kill}>
+                  <IconButton
+                    title="Stop script"
+                    aria-label="Stop script"
+                    className={classes.titleButton}
+                    onClick={kill}
+                  >
                     <StopCircleIcon color="error" />
                   </IconButton>
                 )}
                 <IconButton
                   title={propsRef.current.minimized ? "Expand" : "Minimize"}
+                  aria-label={propsRef.current.minimized ? "Expand log" : "Minimize log"}
                   className={classes.titleButton}
                   onClick={minimize}
-                  onTouchEnd={minimize}
                 >
                   {propsRef.current.minimized ? <ExpandMoreIcon /> : <ExpandLessIcon />}
                 </IconButton>
-                <IconButton title="Close window" className={classes.titleButton} onClick={onClose} onTouchEnd={onClose}>
+                <IconButton
+                  title="Close window"
+                  aria-label="Close log window"
+                  className={classes.titleButton}
+                  onClick={onClose}
+                >
                   <CloseIcon />
                 </IconButton>
               </span>
             </Paper>
 
             <Paper
-              className={classes.logs}
+              className={`${classes.logs} bb-scroll-region`}
               style={{
-                height: `calc(100% - ${minWindowSize[1]}px)`,
+                height: `calc(100% - ${mobile ? 48 : minWindowSize[1]}px)`,
                 display: propsRef.current.minimized ? "none" : "flex",
               }}
               tabIndex={-1}
@@ -414,7 +503,9 @@ function LogWindow({ hidden, script, onClose }: LogWindowProps): React.ReactElem
                         text={line}
                         color={helpers.getTextColor(line)}
                         styles={{
-                          fontSize: propsRef.current.fontSize ?? Settings.styles.tailFontSize,
+                          fontSize: mobile
+                            ? Math.max(14, propsRef.current.fontSize ?? Settings.styles.tailFontSize)
+                            : propsRef.current.fontSize ?? Settings.styles.tailFontSize,
                         }}
                       />
                     ),

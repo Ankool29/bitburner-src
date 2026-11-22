@@ -1,4 +1,5 @@
 import React from "react";
+import { responsiveGrid } from "../ui/React/ResponsiveLayout";
 
 import { Accordion, AccordionSummary, AccordionDetails, Typography, Box } from "@mui/material";
 
@@ -54,7 +55,7 @@ export function AchievementCategory({
          *
          * Setting the width of each achievement to 620px fixes this issue.
          */}
-        <Box sx={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, 620px)" }}>{children}</Box>
+        <Box sx={{ display: "grid", ...responsiveGrid("repeat(auto-fit, 620px)") }}>{children}</Box>
       </AccordionDetails>
     </Accordion>
   );

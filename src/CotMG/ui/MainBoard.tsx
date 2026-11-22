@@ -1,3 +1,4 @@
+import { ResponsiveScroll } from "../../ui/React/ResponsiveLayout";
 import * as React from "react";
 import { type Fragment } from "../Fragment";
 import { StaneksGift } from "../StaneksGift";
@@ -89,16 +90,18 @@ export function MainBoard(props: IProps): React.ReactElement {
   return (
     <>
       <Box display="flex" sx={{ mb: 1 }}>
-        <Table sx={{ mr: 1 }}>
-          <Grid
-            width={props.gift.width()}
-            height={props.gift.height()}
-            ghostGrid={ghostGrid}
-            gift={props.gift}
-            enter={(i, j) => moveGhost(i, j, rotation)}
-            click={(i, j) => clickAt(i, j)}
-          />
-        </Table>
+        <ResponsiveScroll label="Stanek board (scroll horizontally)">
+          <Table data-game-grid sx={{ mr: 1 }}>
+            <Grid
+              width={props.gift.width()}
+              height={props.gift.height()}
+              ghostGrid={ghostGrid}
+              gift={props.gift}
+              enter={(i, j) => moveGhost(i, j, rotation)}
+              click={(i, j) => clickAt(i, j)}
+            />
+          </Table>
+        </ResponsiveScroll>
         <FragmentInspector gift={props.gift} x={pos[0]} y={pos[1]} fragment={props.gift.fragmentAt(pos[0], pos[1])} />
       </Box>
       <Box display="flex" sx={{ mb: 1 }}>

@@ -1,3 +1,4 @@
+import { mobileQuery, mobileMedia } from "../../ui/React/ResponsiveLayout";
 import type { ContentFilePath } from "../../Paths/ContentFile";
 
 import React, { useEffect, useRef, useState } from "react";
@@ -70,7 +71,7 @@ function Root(props: IProps): React.ReactElement {
   const editorRef = useRef<IStandaloneCodeEditor | null>(null);
   const [mountedEditor, setMountedEditor] = useState<IStandaloneCodeEditor | null>(null);
   const [showMoreTools, setShowMoreTools] = useState(false);
-  const mobile = useMediaQuery("(max-width: 600px)");
+  const mobile = useMediaQuery(mobileQuery);
   const viewportRef = useMobileEditorViewport();
 
   // This is the workaround for a bug in monaco-editor: https://github.com/microsoft/monaco-editor/issues/4455
@@ -601,7 +602,7 @@ function Root(props: IProps): React.ReactElement {
           height: "100%",
           width: "100%",
           flexDirection: "column",
-          "@media (max-width: 600px)": {
+          [mobileMedia]: {
             position: "fixed",
             top: "var(--mobile-editor-top, 0px)",
             left: 0,

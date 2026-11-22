@@ -257,7 +257,7 @@ export function NetworkDisplayWrapper(): React.ReactElement {
       )}
 
       <div
-        className={classes.NetWrapper}
+        className={`${classes.NetWrapper} bb-scroll-region`}
         ref={draggableBackground}
         onPointerDown={handleDragStart}
         onPointerUp={handleDragEnd}

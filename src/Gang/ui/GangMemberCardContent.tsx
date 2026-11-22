@@ -1,3 +1,4 @@
+import { responsiveGrid } from "../../ui/React/ResponsiveLayout";
 /**
  * React Component for the content of the accordion of gang members on the
  * management subpage.
@@ -51,7 +52,7 @@ export function GangMemberCardContent(props: IProps): React.ReactElement {
           </StaticModal>
         </Box>
       )}
-      <Box display="grid" sx={{ gridTemplateColumns: "1fr 1fr", width: "100%", gap: 1 }}>
+      <Box display="grid" sx={{ ...responsiveGrid("1fr 1fr"), width: "100%", gap: 1 }}>
         <GangMemberStats member={props.member} />
         <TaskSelector onTaskChange={rerender} member={props.member} />
       </Box>

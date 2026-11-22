@@ -1,3 +1,4 @@
+import { responsiveGrid } from "../../ui/React/ResponsiveLayout";
 import React, { useEffect } from "react";
 import { Explore, Info, LastPage, LocalPolice, NewReleases, Report, SportsMma } from "@mui/icons-material";
 import { Box, Button, Container, Paper, Tooltip, Typography, useTheme } from "@mui/material";
@@ -98,7 +99,7 @@ const FactionElement = (props: FactionElementProps): React.ReactElement => {
         display: "grid",
         p: 1,
         alignItems: "center",
-        gridTemplateColumns: "minmax(0, 4fr)" + (props.faction.isMember ? " 1fr" : ""),
+        ...responsiveGrid("minmax(0, 4fr)" + (props.faction.isMember ? " 1fr" : "")),
       }}
     >
       <Box display="flex" sx={{ alignItems: "center" }}>
@@ -107,7 +108,7 @@ const FactionElement = (props: FactionElementProps): React.ReactElement => {
             display="grid"
             sx={{
               mr: 1,
-              gridTemplateColumns: "1fr 1fr",
+              ...responsiveGrid("1fr 1fr"),
               minWidth: "fit-content",
               gap: 0.5,
               "& .MuiButton-root": { height: "48px" },
@@ -128,7 +129,7 @@ const FactionElement = (props: FactionElementProps): React.ReactElement => {
             sx={{
               mr: 1,
               display: "grid",
-              gridTemplateColumns: "fit-content(100vw) max-content",
+              ...responsiveGrid("fit-content(100vw) max-content"),
               alignItems: "center",
             }}
           >
@@ -258,7 +259,7 @@ export function FactionsRoot(): React.ReactElement {
         sx={{
           gap: 1,
           gridTemplateColumns: (invitedFactions.length > 0 ? "1fr " : "") + "2fr",
-          [theme.breakpoints.down("lg")]: { gridTemplateColumns: "1fr", "& > span:nth-of-type(1)": { order: 1 } },
+          [theme.breakpoints.down("lg")]: { ...responsiveGrid("1fr"), "& > span:nth-of-type(1)": { order: 1 } },
           gridTemplateRows: "minmax(0, 1fr)",
           "& > span > .MuiBox-root": {
             display: "grid",

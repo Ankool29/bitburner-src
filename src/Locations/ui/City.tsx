@@ -16,6 +16,8 @@ import { Player } from "@player";
 import { Page, Router } from "../../ui/Router";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { mobileQuery, ResponsiveScroll } from "../../ui/React/ResponsiveLayout";
 import { Theme } from "@mui/material/styles";
 import { makeStyles } from "tss-react/mui";
 
@@ -148,10 +150,23 @@ function ListCity(props: IProps): React.ReactElement {
 
 export function LocationCity(): React.ReactElement {
   const city = Cities[Player.city];
+  const mobile = useMediaQuery(mobileQuery);
+  const [showMap, setShowMap] = React.useState(false);
   return (
     <>
       <Typography>{city.name}</Typography>
-      {Settings.DisableASCIIArt ? <ListCity city={city} /> : <ASCIICity city={city} />}
+      {mobile && !Settings.DisableASCIIArt && (
+        <Button onClick={() => setShowMap((value) => !value)}>
+          {showMap ? "Show location list" : "Show city map"}
+        </Button>
+      )}
+      {Settings.DisableASCIIArt || (mobile && !showMap) ? (
+        <ListCity city={city} />
+      ) : (
+        <ResponsiveScroll label="City map (scroll horizontally)">
+          <ASCIICity city={city} />
+        </ResponsiveScroll>
+      )}
     </>
   );
 }

@@ -1,3 +1,4 @@
+import { mobileMedia } from "../../ui/React/ResponsiveLayout";
 import React from "react";
 import { Container, Tab, Tabs } from "@mui/material";
 
@@ -22,7 +23,12 @@ export function GoRoot(): React.ReactElement {
 
   return (
     <Container disableGutters maxWidth="lg" sx={{ mx: 0 }}>
-      <Tabs variant="fullWidth" value={value} onChange={handleChange} sx={{ minWidth: "fit-content", maxWidth: "45%" }}>
+      <Tabs
+        variant="fullWidth"
+        value={value}
+        onChange={handleChange}
+        sx={{ minWidth: "fit-content", maxWidth: "45%", [mobileMedia]: { maxWidth: "100%", minWidth: 0 } }}
+      >
         <Tab label="IPvGO Subnet" icon={<BorderInnerSharp />} iconPosition={"start"} className={classes.tab} />
         <Tab label="Status" icon={<ManageSearch />} iconPosition={"start"} className={classes.tab} />
         <Tab label="History" icon={<History />} iconPosition={"start"} className={classes.tab} />

@@ -81,6 +81,8 @@ import { DWRoot } from "../DarkNet/DWRoot";
 import { DocumentationPopUp } from "../Documentation/ui/DocumentationPopUp";
 import { CustomPage } from "./CustomPage";
 
+import { mobileMedia } from "./React/ResponsiveLayout";
+
 const htmlLocation = location;
 
 const useStyles = makeStyles()((theme: Theme) => ({
@@ -90,8 +92,9 @@ const useStyles = makeStyles()((theme: Theme) => ({
     margin: theme.spacing(0),
     flexGrow: 1,
     padding: "8px",
-    [theme.breakpoints.down("sm")]: {
-      paddingBottom: "88px",
+    [mobileMedia]: {
+      paddingBottom: "calc(88px + env(safe-area-inset-bottom, 0px))",
+      minHeight: "var(--bb-ui-height, 100dvh)",
       minWidth: 0,
       maxWidth: "100%",
       overflowX: "hidden",
@@ -505,13 +508,13 @@ export function GameRoot(): React.ReactElement {
               </Overview>
               {withSidebar ? (
                 <Box display="flex" flexDirection="row" width="100%">
-                  <Box sx={{ display: { xs: "none", sm: "block" } }}>
+                  <Box sx={{ display: "block", [mobileMedia]: { display: "none" } }}>
                     <SidebarRoot page={pageWithContext.page} />
                   </Box>
-                  <Box className={classes.root}>{mainPage}</Box>
+                  <Box className={`${classes.root} bb-responsive-page`}>{mainPage}</Box>
                 </Box>
               ) : (
-                <Box className={classes.root}>{mainPage}</Box>
+                <Box className={`${classes.root} bb-responsive-page`}>{mainPage}</Box>
               )}
               {withSidebar && <MobileNavigation page={pageWithContext.page} />}
               <Unclickable />

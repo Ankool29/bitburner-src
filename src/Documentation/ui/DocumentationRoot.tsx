@@ -1,4 +1,5 @@
 import React, { useEffect, useLayoutEffect, useState } from "react";
+import { mobileMedia } from "../../ui/React/ResponsiveLayout";
 
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
@@ -80,6 +81,9 @@ export function DocumentationRoot({ docPage }: { docPage?: string }): React.Reac
         paddingTop="8px"
         bgcolor={Settings.theme.backgroundprimary}
         alignItems="center"
+        sx={{
+          [mobileMedia]: { position: "sticky", top: "var(--bb-ui-top, 0px)", flexWrap: "wrap", width: "100%", gap: 1 },
+        }}
       >
         <Button onClick={() => history.pop()} disabled={history.pages.length === 0}>
           Back
@@ -94,7 +98,7 @@ export function DocumentationRoot({ docPage }: { docPage?: string }): React.Reac
           }}
         />
       </Box>
-      <Box sx={{ paddingTop: "50px", maxWidth: "lg" }}>
+      <Box sx={{ paddingTop: "50px", maxWidth: "lg", [mobileMedia]: { paddingTop: 0 } }}>
         <Navigator.Provider value={navigator}>
           <MD pageFilePath={deepLink ? asFilePath(deepLink) : history.page} />
         </Navigator.Provider>

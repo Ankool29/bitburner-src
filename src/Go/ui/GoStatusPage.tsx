@@ -1,4 +1,5 @@
 import React from "react";
+import { ResponsiveScroll } from "../../ui/React/ResponsiveLayout";
 import { Grid, Table, TableBody, TableCell, TableRow, Typography } from "@mui/material";
 
 import { Go } from "../Go";
@@ -19,7 +20,7 @@ export const GoStatusPage = (): React.ReactElement => {
   const playedOpponentList = getRecordKeys(Go.stats).filter((o) => o !== GoOpponent.none);
 
   return (
-    <div>
+    <ResponsiveScroll label="IPvGO status (scroll horizontally)">
       <Grid container>
         <Grid item>
           <div className={classes.statusPageScore}>
@@ -67,6 +68,6 @@ export const GoStatusPage = (): React.ReactElement => {
           })}
         </TableBody>
       </Table>
-    </div>
+    </ResponsiveScroll>
   );
 };

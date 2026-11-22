@@ -1,3 +1,4 @@
+import { mobileMedia } from "../../ui/React/ResponsiveLayout";
 import { Theme } from "@mui/material/styles";
 import { makeStyles } from "tss-react/mui";
 import { Settings } from "../../Settings/Settings";
@@ -20,6 +21,12 @@ export const dnetStyles = makeStyles<unknown, dwColors>({ uniqId: "dnetStyles" }
   NetWrapper: {
     width: "100%",
     height: "calc(100vh - 80px)",
+    [mobileMedia]: {
+      height: "calc(var(--bb-ui-height, 100dvh) - 200px)",
+      maxWidth: "100%",
+      overscrollBehavior: "contain",
+      touchAction: "none",
+    },
     overflow: "scroll",
     position: "relative",
     border: "solid 1px " + theme.colors.secondary,
@@ -41,6 +48,7 @@ export const dnetStyles = makeStyles<unknown, dwColors>({ uniqId: "dnetStyles" }
   zoomContainer: {
     position: "absolute",
     top: "calc(90vh - 38px)",
+    [mobileMedia]: { position: "static", display: "flex" },
     marginLeft: "1px",
     display: "grid",
     zIndex: 20,

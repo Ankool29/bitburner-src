@@ -1,3 +1,4 @@
+import { mobileMedia, mobileStack } from "../../ui/React/ResponsiveLayout";
 // React Component for managing the Corporation's Industry UI
 // This Industry component does NOT include the city tabs at the top
 import React from "react";
@@ -21,12 +22,12 @@ export function Division(props: IProps): React.ReactElement {
   const corp = useCorporation();
   const division = useDivision();
   return (
-    <Box display="flex">
-      <Box sx={{ width: "50%" }}>
+    <Box display="flex" sx={mobileStack}>
+      <Box sx={{ width: "50%", [mobileMedia]: { width: "100%" } }}>
         <DivisionOverview rerender={props.rerender} />
         <DivisionOffice rerender={props.rerender} office={props.office} />
       </Box>
-      <Box sx={{ width: "50%" }}>
+      <Box sx={{ width: "50%", [mobileMedia]: { width: "100%" } }}>
         <DivisionWarehouse
           rerender={props.rerender}
           corp={corp}

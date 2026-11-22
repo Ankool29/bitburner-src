@@ -1,3 +1,4 @@
+import { responsiveGrid } from "../../ui/React/ResponsiveLayout";
 import React from "react";
 import { Stats } from "./Stats";
 import { Console } from "./Console";
@@ -13,7 +14,7 @@ export function BladeburnerRoot(): React.ReactElement {
   if (!bladeburner) return <></>;
   return (
     <Box display="flex" flexDirection="column">
-      <Box sx={{ display: "grid", gridTemplateColumns: "4fr 8fr", p: 1 }}>
+      <Box sx={{ display: "grid", ...responsiveGrid("4fr 8fr"), p: 1 }}>
         <Stats bladeburner={bladeburner} />
         <Console bladeburner={bladeburner} />
       </Box>

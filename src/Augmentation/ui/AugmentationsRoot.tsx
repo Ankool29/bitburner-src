@@ -1,3 +1,4 @@
+import { responsiveGrid } from "../../ui/React/ResponsiveLayout";
 /**
  * Root React component for the Augmentations UI page that display all of your
  * owned and purchased Augmentations and Source-Files.
@@ -167,7 +168,7 @@ export function AugmentationsRoot(props: IProps): React.ReactElement {
               </>
             }
           />
-          <Box sx={{ display: "grid", width: "100%", gridTemplateColumns: "1fr 1fr" }}>
+          <Box sx={{ display: "grid", width: "100%", ...responsiveGrid("1fr 1fr") }}>
             <Tooltip title={<Typography>'I never asked for this'</Typography>}>
               <span>
                 <Button sx={{ width: "100%" }} disabled={Player.queuedAugmentations.length === 0} onClick={doInstall}>
@@ -183,7 +184,7 @@ export function AugmentationsRoot(props: IProps): React.ReactElement {
           </Box>
         </Paper>
         {Player.queuedAugmentations.length > 0 ? (
-          <Box sx={{ display: "grid", gridTemplateColumns: "1fr 3fr" }}>
+          <Box sx={{ display: "grid", ...responsiveGrid("1fr 3fr") }}>
             <PurchasedAugmentations />
             <PlayerMultipliers />
           </Box>
@@ -198,10 +199,12 @@ export function AugmentationsRoot(props: IProps): React.ReactElement {
         sx={{
           my: 1,
           display: "grid",
-          gridTemplateColumns: `repeat(${
-            +!!((Player.augmentations.find((e) => e.name === AugmentationName.NeuroFluxGovernor)?.level ?? 0) > 0) +
-            +!!(Player.entropy > 0)
-          }, 1fr)`,
+          ...responsiveGrid(
+            `repeat(${
+              +!!((Player.augmentations.find((e) => e.name === AugmentationName.NeuroFluxGovernor)?.level ?? 0) > 0) +
+              +!!(Player.entropy > 0)
+            }, 1fr)`,
+          ),
           gap: 1,
         }}
       >

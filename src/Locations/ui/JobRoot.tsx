@@ -1,3 +1,4 @@
+import { responsiveGrid } from "../../ui/React/ResponsiveLayout";
 import React from "react";
 import { Box, Typography } from "@mui/material";
 
@@ -32,5 +33,5 @@ export function JobRoot(): React.ReactElement {
     );
   }
 
-  return <Box sx={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, 30em)" }}>{jobs}</Box>;
+  return <Box sx={{ display: "grid", ...responsiveGrid("repeat(auto-fit, 30em)") }}>{jobs}</Box>;
 }

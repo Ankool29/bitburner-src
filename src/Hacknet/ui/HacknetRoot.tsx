@@ -1,3 +1,4 @@
+import { responsiveGrid } from "../../ui/React/ResponsiveLayout";
 import React, { useState } from "react";
 
 import { GeneralInfo } from "./GeneralInfo";
@@ -132,7 +133,7 @@ export function HacknetRoot(): React.ReactElement {
         </Grid>
       </Grid>
 
-      <Box sx={{ display: "grid", width: "100%", gridTemplateColumns: "repeat(auto-fit, 30em)" }}>{nodes}</Box>
+      <Box sx={{ display: "grid", width: "100%", ...responsiveGrid("repeat(auto-fit, 30em)") }}>{nodes}</Box>
       <HashUpgradeModal open={open} onClose={() => setOpen(false)} />
     </>
   );
